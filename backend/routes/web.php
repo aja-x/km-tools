@@ -20,7 +20,7 @@ $router->get('/api-key', function (){
     return Str::random(32);
 });
 $router->get('/jwt-key', function (){
-    return Str::random(30);
+    return 'Pu72a0pbGWa7r73QbkQ1ZUigQSjVfO';
 });
 $router->post('/auth/login', ['uses' => 'Auth\AuthController@authenticate']);
 $router->post('/user/create', ['uses' => 'UserController@store']);
@@ -30,5 +30,10 @@ $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
             $users = \App\User::all();
             return response()->json($users);
         });
+
+        $router->get('/article', ['uses' => 'ArticleController@getAll']);
+        $router->get('/article/{id}', ['uses' => 'ArticleController@getSpecific']);
+        $router->get('/article/{id}/view', ['uses' => 'ArticleController@getDetails']);
+        $router->post('/article/', ['uses' => 'ArticleController@store']);
     }
 );
