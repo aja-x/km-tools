@@ -12,6 +12,7 @@
 */
 
 use App\InterestCategory;
+use App\User;
 use Illuminate\Support\Facades\Hash;
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
@@ -36,6 +37,15 @@ $factory->define(App\Article::class, function (Faker\Generator $faker) {
         'content' => $faker->paragraph,
         'last_edited' => $faker->dateTime,
         'published_date' => $faker->dateTime,
+        'id_interest_category' => $faker->randomElement($id_interest),
+    ];
+});
+
+$factory->define(App\UserKmAttribute::class, function (Faker\Generator $faker) {
+    $id_user = User::all()->pluck('id')->toArray();
+    $id_interest = InterestCategory::all()->pluck('id')->toArray();
+    return [
+        'id_user' => $faker->unique()->randomElement($id_user),
         'id_interest_category' => $faker->randomElement($id_interest),
     ];
 });

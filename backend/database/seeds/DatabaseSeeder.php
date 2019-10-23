@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call('UsersTableSeeder');
         $this->call('InterestCategoriesTableSeeder');
         $this->call('ArticlesTableSeeder');
+        $this->call('UserKmAttributesTableSeeder');
         Model::reguard();
     }
 }
