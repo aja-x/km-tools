@@ -16,8 +16,9 @@ class CreateTestsTable extends Migration
         Schema::create('tests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->time('duration');
-            $table->integer('id_article')->index();
-            $table->integer('id_test_category')->index();
+            $table->integer('id_article');
+            $table->integer('id_test_category');
+            $table->unique(['id_article', 'id_test_category']);
             $table->timestamps();
         });
     }
