@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserKmAttributesTable extends Migration
+class CreateTestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateUserKmAttributesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_km_attributes', function (Blueprint $table) {
+        Schema::create('tests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_user')->unique();
-            $table->integer('id_interest_category')->index();
+            $table->time('duration');
+            $table->integer('id_article')->index();
+            $table->integer('id_test_category')->index();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateUserKmAttributesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_km_attributes');
+        Schema::dropIfExists('tests');
     }
 }
