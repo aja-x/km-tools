@@ -16,7 +16,9 @@ class CreateUserKmAttributesTable extends Migration
         Schema::create('user_km_attributes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('id_user')->unique();
-            $table->integer('id_interest_category')->index();
+            $table->bigInteger('id_interest_category')->unsigned()->index();
+            $table->foreign('id_interest_category')->references('id')
+                ->on('interest_categories')->onUpdate('cascade')->onDelete('no action');
             $table->timestamps();
         });
     }

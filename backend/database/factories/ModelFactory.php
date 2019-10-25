@@ -11,9 +11,9 @@
 |
 */
 
-use App\Article;
 use App\InterestCategory;
-use App\TestCategory;
+use App\Question;
+use App\Test;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -52,11 +52,30 @@ $factory->define(App\UserKmAttribute::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Test::class, function (Faker\Generator $faker, $id_test_category) {
-    $id_article = Article::all()->pluck('id')->toArray();
+$factory->define(App\Question::class, function (Faker\Generator $faker) {
+    $id_test = Test::all()->pluck('id')->toArray();
     return [
-        'duration' => $faker->time(),
-        'id_article' => $faker->randomElement($id_article),
-        'id_test_category' => $faker->randomElement($id_test_category),
+        'content' => $faker->sentence(10),
+        'id_test' => $faker->randomElement($id_test),
+    ];
+});
+
+$factory->define(App\QuestionChoice::class, function (Faker\Generator $faker) {
+    $id_question = Question::all()->pluck('id')->toArray();
+    return [
+        'content' => $faker->sentence(),
+        'is_correct' => $faker->boolean(25),
+        'id_question' => $faker->randomElement($id_question),
+    ];
+});
+
+$factory->define(App\TestHistory::class, function (Faker\Generator $faker) {
+    $id_user = User::all()->pluck('id')->toArray();
+    $id_test = Test::all()->pluck('id')->toArray();
+    return [
+        'score' => $faker->numberBetween(0, 100),
+        'completed_time' => $faker->dateTime(),
+        'id_user' => $faker->randomElement($id_user),
+        'id_test' => $faker->randomElement($id_test),
     ];
 });
