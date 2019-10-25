@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserKmAttribute extends Model
+class TestHistory extends Model
 {
 
     protected $fillable = [
-        'id_user', 'id_interest_category',
+        'score', 'completed_time', 'id_user', 'id_test',
     ];
 
 }

@@ -17,7 +17,9 @@ class CreateQuestionChoicesTable extends Migration
             $table->bigIncrements('id');
             $table->string('content');
             $table->boolean('is_correct');
-            $table->integer('id_question')->index();
+            $table->bigInteger('id_question')->unsigned()->index();
+            $table->foreign('id_question')->references('id')
+                ->on('questions')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
