@@ -17,6 +17,11 @@ class DatabaseSeeder extends Seeder
         $this->call('InterestCategoriesTableSeeder');
         $this->call('ArticlesTableSeeder');
         $this->call('UserKmAttributesTableSeeder');
+        $this->call('TestCategoriesTableSeeder');
+        $this->call('TestsTableSeeder');
+        $this->call('QuestionsTableSeeder');
+        $this->call('QuestionChoicesTableSeeder');
+        $this->call('TestHistoriesTableSeeder');
         Model::reguard();
     }
 }

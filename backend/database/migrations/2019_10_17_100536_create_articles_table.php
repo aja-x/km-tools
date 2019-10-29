@@ -19,9 +19,9 @@ class CreateArticlesTable extends Migration
             $table->longText('content');
             $table->timestamp('last_edited')->nullable();
             $table->timestamp('published_date')->nullable();
-            $table->bigInteger('id_interest_category')->unsigned();
-            $table->foreign('id_interest_category')->references('id')->on('interest_categories')
-                ->onUpdate('cascade')->onDelete('no action');
+            $table->bigInteger('id_interest_category')->unsigned()->index();
+            $table->foreign('id_interest_category')->references('id')
+                ->on('interest_categories')->onUpdate('cascade')->onDelete('no action');
             $table->timestamps();
         });
     }

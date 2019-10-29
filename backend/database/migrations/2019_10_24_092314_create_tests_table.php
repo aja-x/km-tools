@@ -16,13 +16,13 @@ class CreateTestsTable extends Migration
         Schema::create('tests', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->time('duration');
-            $table->bigInteger('id_article')->unsigned();
-            $table->bigInteger('id_test_category')->unsigned();
-            $table->unique(['id_article','id_test_category']);
-            $table->foreign('id_article')->references('id')->on('articles')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('id_test_category')->references('id')->on('test_categories')
-                ->onUpdate('cascade')->onDelete('no action');
+            $table->bigInteger('id_article')->unsigned()->index();
+            $table->bigInteger('id_test_category')->unsigned()->index();
+            $table->unique(['id_article', 'id_test_category']);
+            $table->foreign('id_article')->references('id')
+                ->on('articles')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_test_category')->references('id')
+                ->on('test_categories')->onUpdate('cascade')->onDelete('no action');
             $table->timestamps();
         });
     }
