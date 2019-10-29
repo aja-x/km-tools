@@ -17,8 +17,8 @@ class CreateQuestionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('content');
             $table->bigInteger('id_test')->unsigned()->index();
-            $table->foreign('id_test')->references('id')
-                ->on('tests')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_test')->references('id')->on('tests')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

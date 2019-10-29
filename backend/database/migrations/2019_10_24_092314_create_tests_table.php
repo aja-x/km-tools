@@ -23,7 +23,6 @@ class CreateTestsTable extends Migration
                 ->on('articles')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('id_test_category')->references('id')
                 ->on('test_categories')->onUpdate('cascade')->onDelete('no action');
-
             $table->timestamps();
         });
     }

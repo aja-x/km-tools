@@ -21,7 +21,7 @@ class CreateArticlesTable extends Migration
             $table->timestamp('published_date')->nullable();
             $table->bigInteger('id_interest_category')->unsigned()->index();
             $table->foreign('id_interest_category')->references('id')
-                ->on('interest_categories')->onUpdate('cascade')->onDelete('cascade');
+                ->on('interest_categories')->onUpdate('cascade')->onDelete('no action');
             $table->timestamps();
         });
     }
