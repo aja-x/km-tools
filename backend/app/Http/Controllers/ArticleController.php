@@ -4,102 +4,83 @@ namespace App\Http\Controllers;
 
 use App\Article;
 use App\Services\Http\Response;
+use App\Test;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class ArticleController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    private $rules;
+
     public function __construct()
     {
-        //
+        $this->rules = [
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'id_interest_category' => 'required|integer'
+        ];
     }
 
     public function index()
     {
-        $articles = Article::all();
-        return Response::returnResponse('data', $articles, 200);
+        return Response::view(Article::all());
     }
 
     public function view($id)
     {
-        $article = Article::findOrFail($id);
-        return Response::returnResponse('data', $article, 200);
+        return Response::view(Article::findOrFail($id));
     }
 
-    public function filterCategory($id_interest_category)
+    public function filterCategory($idInterestCategory)
     {
-        $article = Article::where('id_interest_category', $id_interest_category)->get();
-        return Response::returnResponse('data', $article, 200);
+        return Response::view(Article::where('id_interest_category', $idInterestCategory)->get());
     }
 
-    public function store(Request $request)
+    public function save(Request $request, $id = null)
     {
-        try
-        {
-            $this->validate($request, [
-                'title' => 'required|string',
-                'content' => 'required|string',
-//                'last_edited' => 'timestamp',
-//                'published_date' => 'timestamp',
-                'id_interest_category' => 'required|integer'
+        $this->validate($request, $this->rules);
+        if ($id === null)
+            $article = Article::create([
+                'title' => $request->input('title'),
+                'content' => $request->input('content'),
+                'last_edited' => date("Y-m-d H:i:s"),
+                'id_interest_category' => $request->input('id_interest_category'),
             ]);
-        }
-        catch (ValidationException $e)
-        {
-            return Response::returnResponse('error', $e, 400);
-        }
-        $article = Article::create([
-            'title' => $request->input('title'),
-            'content' => $request->input('content'),
-            'last_edited' => $request->input('last_edited'),
-            'published_date' => $request->input('published_date'),
-            'id_interest_category' => $request->input('id_interest_category'),
-        ]);
-        if (!$article)
-            return Response::returnResponse('error', 'Store error', 400);
         else
-            return Response::returnResponse('Object created', $article, 201);
+            $article = Article::findOrFail($id)->update([
+                'title' => $request->input('title'),
+                'content' => $request->input('content'),
+                'last_edited' => date("Y-m-d H:i:s"),
+                'id_interest_category' => $request->input('id_interest_category'),
+            ]);
+        return Response::success($article, 201);
     }
 
-    public function update(Request $request, $id)
+    public function publish(Request $request, $id = null)
     {
-        try
-        {
-            $this->validate($request, [
-                'title' => 'required|string',
-                'content' => 'required|string',
-//                'last_edited' => 'timestamp',
-//                'published_date' => 'timestamp',
-                'id_interest_category' => 'required|integer'
+        $this->validate($request, $this->rules);
+        if ($id === null)
+            $article = Article::create([
+                'title' => $request->input('title'),
+                'content' => $request->input('content'),
+                'last_edited' => date("Y-m-d H:i:s"),
+                'published_date' => date("Y-m-d H:i:s"),
+                'id_interest_category' => $request->input('id_interest_category'),
             ]);
-        }
-        catch (ValidationException $e)
-        {
-            return Response::returnResponse('error', $e, 400);
-        }
-        $article = Article::findOrFail($id)->update([
-            'title' => $request->input('title'),
-            'content' => $request->input('content'),
-//            'last_edited' => $request->input('last_edited'),
-//            'published_date' => $request->input('published_date'),
-            'id_interest_category' => $request->input('id_interest_category'),
-        ]);
-        if (!$article)
-            return Response::returnResponse('error', 'Update error', 400);
         else
-            return Response::returnResponse('Object updated', $article, 200);
+            $article = Article::findOrFail($id)->update([
+                'title' => $request->input('title'),
+                'content' => $request->input('content'),
+                'last_edited' => date("Y-m-d H:i:s"),
+                'published_date' => date("Y-m-d H:i:s"),
+                'id_interest_category' => $request->input('id_interest_category'),
+            ]);
+        return Response::success($article);
     }
 
     public function destroy($id)
     {
-        if (!Article::destroy($id))
-            return Response::returnResponse('error', 'Destroy error', 400);
-        else
-            return Response::returnResponse('Object destroyed', '', 204);
+        return Response::success(Article::destroy($id), 204);
     }
+
 }

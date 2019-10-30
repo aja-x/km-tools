@@ -22,18 +22,25 @@ $router->get('/api-key', function (){
 $router->get('/jwt-key', function (){
     return 'Pu72a0pbGWa7r73QbkQ1ZUigQSjVfO';
 });
-$router->post('/auth/login', ['uses' => 'Auth\AuthController@authenticate']);
-$router->post('/user/create', ['uses' => 'UserController@store']);
+$router->post('/login', ['uses' => 'Auth\AuthController@authenticate']);
+$router->post('/register', ['uses' => 'Auth\AuthController@register']);
 
 $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
-        $router->get('users', function() {
-            $users = \App\User::all();
-            return response()->json($users);
-        });
+        $router->get('user/{id}', ['uses' => 'UserController@view']);
+        $router->put('user/{id}', ['uses' => 'UserController@update']);
+        $router->put('user/{id}/password', ['uses' => 'UserController@updatePassword']);
+        $router->delete('user/{id}', ['uses' => 'UserController@destroy']);
 
-        $router->get('/article', ['uses' => 'ArticleController@getAll']);
-        $router->get('/article/{id}', ['uses' => 'ArticleController@getSpecific']);
-        $router->get('/article/{id}/view', ['uses' => 'ArticleController@getDetails']);
-        $router->post('/article/', ['uses' => 'ArticleController@store']);
+        $router->get('/article', ['uses' => 'ArticleController@index']);
+        $router->get('/article/{id}', ['uses' => 'ArticleController@filterCategory']);
+        $router->get('/article/{id}/view', ['uses' => 'ArticleController@view']);
+        $router->post('/article/', ['uses' => 'ArticleController@save']);
+        $router->put('/article/{id}', ['uses' => 'ArticleController@save']);
+        $router->post('/article/', ['uses' => 'ArticleController@publish']);
+        $router->put('/article/{id}', ['uses' => 'ArticleController@publish']);
+        $router->delete('/article/{id}', ['uses' => 'ArticleController@destroy']);
+
+        $router->get('/test/{id}', ['uses' => 'ArticleController@test']);
+
     }
 );
