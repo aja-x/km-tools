@@ -41,6 +41,5 @@ $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
         $router->delete('/article/{id}', ['uses' => 'ArticleController@destroy']);
 
         $router->get('/test/{id}', ['uses' => 'ArticleController@test']);
-
     }
 );
