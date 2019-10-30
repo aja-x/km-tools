@@ -17,7 +17,7 @@ class CreateTestHistoriesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('score');
             $table->timestamp('completed_time');
-            $table->integer('id_user')->unsigned()->index();
+            $table->bigInteger('id_user')->unsigned()->index();
             $table->bigInteger('id_test')->unsigned()->index();
             $table->foreign('id_user')->references('id')
                 ->on('users')->onUpdate('cascade')->onDelete('cascade');

@@ -31,9 +31,11 @@ $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
             return response()->json($users);
         });
 
-        $router->get('/article', ['uses' => 'ArticleController@getAll']);
+        $router->get('/article', ['uses' => 'ArticleController@index']);
         $router->get('/article/{id}', ['uses' => 'ArticleController@getSpecific']);
         $router->get('/article/{id}/view', ['uses' => 'ArticleController@getDetails']);
         $router->post('/article/', ['uses' => 'ArticleController@store']);
+
+        $router->get('/test/{id_test}', ['uses' => 'TestController@index']);
     }
 );
