@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-
     public function register(Request $request)
     {
         $this->validate($request, [
@@ -57,5 +56,4 @@ class AuthController extends Controller
 
         return Response::plain(['error' => 'Email or password is wrong.'], 400);
     }
-
 }

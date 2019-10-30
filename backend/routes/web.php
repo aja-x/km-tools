@@ -40,7 +40,6 @@ $router->group(['middleware' => 'jwt.auth'], function() use ($router) {
         $router->put('/article/{id}', ['uses' => 'ArticleController@publish']);
         $router->delete('/article/{id}', ['uses' => 'ArticleController@destroy']);
 
-        $router->get('/test/{id}', ['uses' => 'ArticleController@test']);
-
+        $router->get('/test/{id}', ['uses' => 'ThisControllerIsForTestingOnlyController@test']);
     }
 );

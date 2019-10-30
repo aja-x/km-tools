@@ -1,11 +1,6 @@
 <?php
 
-
 namespace App\Services\Http;
-
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class Response
 {
