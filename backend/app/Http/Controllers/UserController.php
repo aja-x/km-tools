@@ -8,11 +8,9 @@ use App\User;
 use App\UserKmAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-
     private $rules;
 
     public function __construct()

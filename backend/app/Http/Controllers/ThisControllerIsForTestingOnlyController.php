@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\Http\Response;
 use App\Test;
 
-class TestingOnlyController extends Controller
+class ThisControllerIsForTestingOnlyController extends Controller
 {
     /**
      * Create a new controller instance.
