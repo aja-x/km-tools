@@ -12,81 +12,54 @@ use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+
+    private $rules;
+
     public function __construct()
     {
-        //
+        $this->rules = [
+            'name' => 'required|string',
+            'username' => 'required|string',
+            'email' => 'required|email',
+            'id_interest_category' => 'required|number'
+        ];
     }
 
-    public function store(Request $request)
+    public function view($id)
     {
-        try
-        {
-            $this->validate($request, [
-                'name' => 'required|string',
-                'username' => 'required|string',
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
-        }
-        catch (ValidationException $e)
-        {
-            return Response::returnResponse('error', $e, 400);
-        }
-        $user = User::create([
-            'name' => $request->input('name'),
-            'username' => $request->input('username'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
-        if (!$user)
-            return Response::returnResponse('error', 'Store error', 400);
-        else
-            return Response::returnResponse('Object created', $user, 201);
+        return Response::view(Article::findOrFail($id));
     }
 
     public function update(Request $request, $id)
     {
-        try
-        {
-            $this->validate($request, [
-                'name' => 'required|string',
-                'username' => 'required|string',
-                'email' => 'required|email',
-                'password' => 'required',
-                'id_interest_category' => 'required|number'
-            ]);
-        }
-        catch (ValidationException $e)
-        {
-            return Response::returnResponse('error', $e, 400);
-        }
+        $this->validate($request, $this->rules);
         $user = User::findOrFail($id)->update([
             'name' => $request->input('name'),
             'username' => $request->input('username'),
             'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
         ]);
         $userKmAttibute = UserKmAttribute::findOrFail($id)->update([
             'id_interest_category' => $request->input('id_interest_category'),
         ]);
-        if (!$user || !$userKmAttibute)
-            return Response::returnResponse('error', 'Update error', 400);
-        else
-            return Response::returnResponse('Object updated', $article, 200);
+        return Response::success($user && $userKmAttibute);
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        $this->validate($request, ['password' => 'required']);
+
+        $user = User::findOrFail($id);
+        if (!(Hash::check($request->input('password'), $user->password)))
+            Response::plain(['message' => 'Wrong password'], 400);
+
+        $user->update([
+            'password' => $request->input('password'),
+        ]);
+        return Response::success($user);
     }
 
     public function destroy($id)
     {
-        $user = User::destroy($id);
-        $userKmAttribute = UserKmAttribute::where('id_interest_category', $id)->delete();
-        if (!$user ||!$userKmAttribute)
-            return Response::returnResponse('error', 'Destroy error', 400);
-        else
-            return Response::returnResponse('Object destroyed', '', 204);
+        return Response::success(User::destroy($id), 204);
     }
 }
