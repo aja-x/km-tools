@@ -8,7 +8,6 @@ use App\User;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -51,12 +50,12 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->input('email'))->first();
         if (!$user)
-            return Response::returnResponse('error', 'Email or password is wrong.', 400);
+            return Response::plain(['error' => 'Email or password is wrong.'], 400);
 
         if (Hash::check($request->input('password'), $user->password))
-            return Response::returnResponse('token', $this->createPayload($user), 200);
+            return Response::plain(['message' => $this->createPayload($user)]);
 
-        return Response::returnResponse('error', 'Email or password is wrong.', 400);
+        return Response::plain(['error' => 'Email or password is wrong.'], 400);
     }
 
 }
