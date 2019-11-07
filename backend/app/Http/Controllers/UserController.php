@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
 use App\Services\Http\Response;
 use App\User;
 use App\UserKmAttribute;
@@ -25,7 +24,7 @@ class UserController extends Controller
 
     public function view($id)
     {
-        return Response::view(Article::findOrFail($id));
+        return Response::view(User::findOrFail($id));
     }
 
     public function update(Request $request, $id)
@@ -36,7 +35,7 @@ class UserController extends Controller
             'username' => $request->input('username'),
             'email' => $request->input('email'),
         ]);
-        $userKmAttibute = UserKmAttribute::findOrFail($id)->update([
+        $userKmAttibute = UserKmAttribute::where('id_user', $id)->update([
             'id_interest_category' => $request->input('id_interest_category'),
         ]);
         return Response::success($user && $userKmAttibute);
