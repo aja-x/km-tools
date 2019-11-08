@@ -24,4 +24,16 @@ class Response
         else
             return self::plain(['message' => 'Error while managing data'], 400);
     }
+
+    public static function tryResponse($data)
+    {
+        try
+        {
+            $data;
+        }
+        catch (\Exception $exception)
+        {
+
+        }
+    }
 }
