@@ -7,7 +7,6 @@ use App\Services\Http\Response;
 use App\ErrorReport;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class ErrorReportController extends Controller
 {
