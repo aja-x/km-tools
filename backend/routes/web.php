@@ -22,10 +22,10 @@ $router->get('/api-key', function (){
 $router->get('/jwt-key', function (){
     return 'Pu72a0pbGWa7r73QbkQ1ZUigQSjVfO';
 });
-$router->post('/login', ['uses' => 'Auth\AuthController@authenticate']);
+$router->post('/login', ['uses' => 'Auth\AuthController@login']);
 $router->post('/register', ['uses' => 'Auth\AuthController@register']);
 
-$router->group(['middleware' => 'jwt.auth'], function() use ($router) {
+$router->group(['middleware' => 'auth'], function() use ($router) {
         $router->get('user/{id}', ['uses' => 'UserController@view']);
         $router->put('user/{id}', ['uses' => 'UserController@update']);
         $router->put('user/{id}/password', ['uses' => 'UserController@updatePassword']);
