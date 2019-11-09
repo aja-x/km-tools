@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Services\Http\Response;
 use App\User;
-use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -28,32 +28,26 @@ class AuthController extends Controller
         return Response::success($user, 201);
     }
 
-    private function createPayload(User $user)
+    public function login(Request $request)
     {
-        $payload = [
-            'iss' => "lumen-jwt", // Issuer of the token
-            'sub' => $user->id, // Subject of the token
-            'iat' => time(), // Time when JWT was issued.
-            'exp' => time() + 60*60 // Expiration time
-        ];
-
-        return JWT::encode($payload, env('JWT_KEY'));
-    }
-
-    public function authenticate(Request $request)
-    {
+        //validate incoming request
         $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $request->input('email'))->first();
-        if (!$user)
-            return Response::plain(['error' => 'Email or password is wrong.'], 400);
+        $credentials = $request->only(['email', 'password']);
 
-        if (Hash::check($request->input('password'), $user->password))
-            return Response::plain(['message' => $this->createPayload($user)]);
+        if (! $token = Auth::attempt($credentials)) {
+            return Response::plain(['message' => 'Unauthorized'], 401);
+        }
 
-        return Response::plain(['error' => 'Email or password is wrong.'], 400);
+        return $this->respondWithToken($token);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return Response::plain(['message' => 'Logout success']);
     }
 }

@@ -17,6 +17,7 @@ class CreateErrorReportsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->text('content');
+            $table->timestamp('last_updated');
             $table->bigInteger('id_user')->unsigned()->index();
             $table->bigInteger('id_interest_category')->unsigned()->index();
             $table->foreign('id_user')->references('id')

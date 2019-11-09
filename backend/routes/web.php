@@ -22,23 +22,25 @@ $router->get('/api-key', function (){
 $router->get('/jwt-key', function (){
     return 'Pu72a0pbGWa7r73QbkQ1ZUigQSjVfO';
 });
-$router->post('/login', ['uses' => 'Auth\AuthController@authenticate']);
-$router->post('/register', ['uses' => 'Auth\AuthController@register']);
+$router->post('/login', 'Auth\AuthController@login');
+$router->post('/register', 'Auth\AuthController@register');
 
-$router->group(['middleware' => 'jwt.auth'], function() use ($router) {
-        $router->get('user/{id}', ['uses' => 'UserController@view']);
-        $router->put('user/{id}', ['uses' => 'UserController@update']);
-        $router->put('user/{id}/password', ['uses' => 'UserController@updatePassword']);
-        $router->delete('user/{id}', ['uses' => 'UserController@destroy']);
+$router->group(['middleware' => 'auth'], function() use ($router) {
+        $router->get('user/{id}', 'UserController@view');
+        $router->put('user/{id}', 'UserController@update');
+        $router->put('user/{id}/password', 'UserController@updatePassword');
+        $router->delete('user/{id}', 'UserController@destroy');
 
-        $router->get('/article', ['uses' => 'ArticleController@index']);
-        $router->get('/article/{id}', ['uses' => 'ArticleController@filterCategory']);
-        $router->get('/article/{id}/view', ['uses' => 'ArticleController@view']);
-        $router->post('/article/', ['uses' => 'ArticleController@save']);
-        $router->put('/article/{id}', ['uses' => 'ArticleController@save']);
-        $router->post('/article/', ['uses' => 'ArticleController@publish']);
-        $router->put('/article/{id}', ['uses' => 'ArticleController@publish']);
-        $router->delete('/article/{id}', ['uses' => 'ArticleController@destroy']);
-        $router->get('/test/{id}', ['uses' => 'ThisControllerIsForTestingOnlyController@test']);
+        $router->get('/article', 'ArticleController@index');
+        $router->get('/article/{id}', 'ArticleController@filterCategory');
+        $router->get('/article/{id}/view', 'ArticleController@view');
+        $router->post('/article/', 'ArticleController@save');
+        $router->put('/article/{id}', 'ArticleController@save');
+        $router->post('/article/', 'ArticleController@publish');
+        $router->put('/article/{id}', 'ArticleController@publish');
+        $router->delete('/article/{id}', 'ArticleController@destroy');
+        $router->get('/test/{id}', 'ThisControllerIsForTestingOnlyController@test');
+
+        $router->post('/logout', 'Auth\AuthController@logout');
     }
 );
